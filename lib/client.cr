@@ -1,17 +1,19 @@
+require "json"
 require "socket"
 
 class Client
+  getter version : String = "crystal-bot v0.0.1"
 
-  getter server : String = "irc.freenode.net"
-  getter port : Int32 = 6667
-  getter nick : String = "crystal8509"
-  getter user : String = "crystal8509"
-  getter version : String = "crystal8509 v0.0.1"
+  property server : String = ""
+  property port : Int32 = 6667
+  property nick : String = ""
+  property user : String = ""
 
   property client : TCPSocket
   property response_count : Int32 = 0
 
   def initialize
+    configure
     @client = TCPSocket.new(@server, @port)
     
     while true
@@ -54,5 +56,13 @@ class Client
     return unless parts.size == 2
     puts "PONG :#{parts[1]}"
     @client << "PONG :#{parts[1]}\r\n"
+  end
+
+  def configure
+    json = JSON.parse(File.read("config.json"))
+    @server = json["server"].to_s
+    @port = json["port"].to_s.to_i
+    @nick = json["nick"].to_s
+    @user = json["user"].to_s
   end
 end
