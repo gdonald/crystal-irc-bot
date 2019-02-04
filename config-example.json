@@ -1,6 +1,8 @@
 {
   "nick": "crystal",
   "user": "crystal",
+  "password": "none",
   "server": "irc.freenode.net",
-  "port": 6667
+  "port": 6667,
+  "channels": ["#crystal-lang"]
 }
